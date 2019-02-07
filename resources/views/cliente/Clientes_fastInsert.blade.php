@@ -1,4 +1,4 @@
-{!!\Basics::modalHeader(null,'cliente','Agregar Cliente - Modo Rápido')!!}
+{!!\Basics::modalHeader(null,'clientes','Agregar Cliente - Modo Rápido')!!}
 <div class="modal-body">
 	<div id="errors-modal"></div>
 	<form action="{{route('config.cliente.insert.form.fast')}}" id="form_clientes_fast" method="POST" class="col-10 offset-1">

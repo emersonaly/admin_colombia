@@ -30,7 +30,7 @@ class FacturaDetailController extends Controller
     		$detail_factura->save();
     	} else {
 	    	// Insert details
-	    	$detail_producto_list         = \App\Productos::findOrFail($request->input('productos_id'));
+	    	$detail_producto_list         = \App\Producto::findOrFail($request->input('productos_id'));
 			$detail_factura                     = new \App\FacturaDetail;
 			$detail_factura->facturas_id        = $facturas_id;
 			$detail_factura->productos_id       = $request->input('productos_id');
