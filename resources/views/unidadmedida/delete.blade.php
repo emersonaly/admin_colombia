@@ -7,7 +7,7 @@
 
 		<div class="card">
 			<div class="card-header">
-				Eliminar Banco
+				Eliminar Unidad de Medida
 			</div>
 			<div class="card-body">
 				<div class="alert alert-info">
