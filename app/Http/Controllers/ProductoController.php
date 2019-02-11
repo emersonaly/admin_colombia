@@ -10,6 +10,7 @@ class ProductoController extends Controller
     public function index() {
     	$productos = \App\Producto::orderBy('id','desc')->paginate(10);
     	return view('producto.index',['listproductos'=>$productos]);
+
     }
 
     public function insertPage() {
@@ -50,6 +51,15 @@ class ProductoController extends Controller
     	$productos->porcentaje_descuento = $request->input('descuento');
     	$productos->impuestos_id = $request->input('impuestos_id');
     	$productos->save();
+
+        
+       
+            
+       /* $kardex = new \App\Kardex;        
+        $kardex = $user_id = $user->id;    
+        /*$kardex->tipo = $tip;
+        $kardex->save();*/
+       
     	return redirect()->route('config.producto')->with([
     		'message'=>$productos->descripcion.' ha sido agregado correctamente'
     	]);

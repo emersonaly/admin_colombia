@@ -18,7 +18,8 @@ class CreateKardex extends Migration
             $table->unsignedInteger('user_id')->comment('Ide Clave de la tabla usuario');
             $table->unsignedInteger('producto_id')->comment('FK Ide de Productos');
             $table->unsignedInteger('empresa_id')->comment('FK Ide de empresa');
-            $table->bigInteger('factura')->unsigned()->comment('Numero de factura ya sea de Venta o de Compra');
+            /*$table->unsignedInteger('bodega_id')->comment('FK Ide de Bodega para en caso de traslado');
+*/            $table->bigInteger('factura')->unsigned()->comment('Numero de factura ya sea de Venta o de Compra');
             $table->string('tipo',2)->comment('1=modulo Compra, 2=modulo Venta, 3=Devolucion de Compra, 4=Devolucion de Venta, 5=modulo de productos');
             $table->double('existen_anter', 16, 2)->comment('Existencia anterior');
             $table->double('cantidad', 16, 2)->comment('Cantidad de Compra o de Venta');
@@ -29,6 +30,7 @@ class CreateKardex extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('producto_id')->references('id')->on('productos');
             $table->foreign('empresa_id')->references('id')->on('list_empresa');
+            /*$table->foreign('bodega_id')->references('id')->on('bodega');*/
         });
     }
 
