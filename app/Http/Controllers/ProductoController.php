@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
@@ -21,6 +22,7 @@ class ProductoController extends Controller
     }
 
     public function insertForm(Request $request) {
+        $user = \Auth::user();
     	$data = $request->validate([
     		'codigo'=>'required|unique:productos,codigo_barrra',
     		'descripcion'=>'required',
@@ -36,7 +38,7 @@ class ProductoController extends Controller
     		'impuestos_id'=>'required',
     	]);
     	$productos = new \App\Producto;
-    	$user = \Auth::user();
+    	
     	$productos->user_id = $user->id;
     	$productos->codigo_barrra = $request->input('codigo');
     	$productos->descripcion = $request->input('descripcion');
@@ -52,24 +54,33 @@ class ProductoController extends Controller
     	$productos->impuestos_id = $request->input('impuestos_id');
     	$productos->save();
 
-        
-       
-            
-       /* $kardex = new \App\Kardex;        
-        $kardex = $user_id = $user->id;    
-        /*$kardex->tipo = $tip;
-        $kardex->save();*/
-       
+        $productos_kardex = \App\Producto::All()->last();
+           if ($productos_kardex) {
+                $kardex                 = new \App\Kardex;     
+                $kardex->user_id        = $user->id;
+                $kardex->producto_id    = $productos_kardex->id;
+                $kardex->empresa_id     = $productos_kardex->empre_id;
+                $kardex->factura        = '0';
+                $kardex->tipo           = '0';
+                $kardex->existen_anter  = '0';
+                $kardex->cantidad       = $productos_kardex->existen;
+                $kardex->existen_post   = '0';
+                $kardex->precio_momento = $productos_kardex->precio_venta1;   
+                $kardex->impuesto       = $productos_kardex->impuestos_id;
+                $kardex->save();
+
+              }         
     	return redirect()->route('config.producto')->with([
     		'message'=>$productos->descripcion.' ha sido agregado correctamente'
     	]);
     }
 
     public function updatePage($producto_ide) {
-    	$producto = \App\Producto::findOrFail($producto_ide);
+    	$producto = \App\Producto::whereIn($producto_ide);
         $unidadmedida = \App\UnidadMedida::All();
         $empresas = \App\Empresa::All();
         $impuestos = \App\Impuesto::All();
+
         return view('producto.update',compact('producto','unidadmedida','empresas','impuestos'));
     }
 
@@ -108,9 +119,11 @@ class ProductoController extends Controller
         $productos->porcentaje_descuento = $request->input('descuento');
         $productos->impuestos_id = $request->input('impuestos_id');
         $productos->save();
+        
+        
         return redirect()->route('config.producto.update',['producto_id'=>$request->input('producto_id')])->with([
             'message'=>$productos->descripcion.' ha sido actualizado correctamente'
-        ]);
+        ])
     }
     
     public function deletePage($producto_id) {

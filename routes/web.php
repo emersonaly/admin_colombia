@@ -159,3 +159,5 @@ Route::get('/config/proveedor/delete/{proveedor_id}')->uses('ProveedorController
 Route::post('/config/proveedor/delete/form')->uses('ProveedorController@deleteForm')->name('config.proveedor.delete.form')->middleware('auth');
 Route::post('/config/proveedor/insert/form/fast')->uses('ProveedorController@insertFormFast')->name('config.proveedor.insert.form.fast')->middleware('auth');
 
+// Kardex 
+
